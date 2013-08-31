@@ -1,4 +1,4 @@
 Pulseada
 ========
 
-Juego para controlar una bolita de a varios jugadores
+Juego de maña y fuerza
