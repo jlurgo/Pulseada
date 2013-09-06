@@ -3,7 +3,7 @@ var onDeviceReady = function() {
     var _this = this;
     var login = new PantallaLogin({
         callback_usuario: function(un_usuario){
-            var campo_de_juego = new CampoDeJuego({usuario: un_usuario, 
+            campo_de_juego = new CampoDeJuego({usuario: un_usuario, 
                                                    canvas:$("#canvas_campo_de_juego")});   
             $.mobile.changePage (pantalla_pulseada, { transition: "flip"});
         }

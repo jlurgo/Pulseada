@@ -7,6 +7,6 @@ CampoDeJuego.prototype.start = function(){
     paper.setup(this.o.canvas[0]);
     var joystick = new Joystick();
     var bolita = new Bolita();
-
+    
     paper.view.draw();
 };
