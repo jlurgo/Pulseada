@@ -26,15 +26,16 @@ Bolita.prototype.start = function(){
     setInterval(function(){
         _this.actualizarPosicion();
     }, this.periodoDeMuestreo);
-    this.vista_fuerza = new paper.Path.Line(paper.project.view.center, paper.project.view.center);
+    
+    //this.vista_fuerza = new paper.Path.Line(this.circulo.position, this.circulo.position));
+    this.vista_fuerza = new paper.Path();
     this.vista_fuerza.strokeColor = 'blue';
-    this.vista_fuerza.strokeWidth = 10;
+    this.vista_fuerza.strokeWidth = 5;
 };
 
 Bolita.prototype.fuerzaRecibida = function(fuerza){   
     this.fuerza.x = fuerza.x;
     this.fuerza.y = fuerza.y;    
-    
 };
 
 Bolita.prototype.actualizarPosicion = function(fuerza){   
@@ -45,4 +46,9 @@ Bolita.prototype.actualizarPosicion = function(fuerza){
     
     this.posicion.x += this.velocidad.x * this.periodoDeMuestreo_s/1000;
     this.posicion.y += this.velocidad.y * this.periodoDeMuestreo_s/1000;
+    
+    this.vista_fuerza.segments = [
+	   [this.circulo.position],
+	   [this.circulo.position.add([this.fuerza.x*100, this.fuerza.y*100])]
+    ];
 };

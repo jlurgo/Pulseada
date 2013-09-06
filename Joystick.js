@@ -55,5 +55,5 @@ Joystick.prototype.start = function(){
                                 y : _this.fuerza.y});
         _this.fuerza.x = 0;
         _this.fuerza.y = 0;
-    },200);
+    },500);
 };
