@@ -27,7 +27,6 @@ Bolita.prototype.start = function(){
         _this.actualizarPosicion();
     }, this.periodoDeMuestreo);
     
-    //this.vista_fuerza = new paper.Path.Line(this.circulo.position, this.circulo.position));
     this.vista_fuerza = new paper.Path();
     this.vista_fuerza.strokeColor = 'blue';
     this.vista_fuerza.strokeWidth = 5;
