@@ -1,13 +1,16 @@
 var onDeviceReady = function() {         
     var pantalla_pulseada = $("#pantalla_pulseada");
     var _this = this;
-    var login = new PantallaLogin({
+    campo_de_juego = new CampoDeJuego({usuario: {tu:"vieja"}, 
+                                                   canvas:$("#canvas_campo_de_juego")});   
+    $.mobile.changePage (pantalla_pulseada, { transition: "flip"});
+/*    var login = new PantallaLogin({
         callback_usuario: function(un_usuario){
             campo_de_juego = new CampoDeJuego({usuario: un_usuario, 
                                                    canvas:$("#canvas_campo_de_juego")});   
             $.mobile.changePage (pantalla_pulseada, { transition: "flip"});
         }
-    });
+    });*/
 };
 
 $(document).ready(function() {  

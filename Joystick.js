@@ -12,23 +12,31 @@ Joystick.prototype.start = function(){
     this.up_press = false;
     this.right_press = false;
     this.down_press = false;
+    this.last_left = Date.now();
+    this.last_up = Date.now();
+    this.last_right = Date.now();
+    this.last_down = Date.now();
     
     var _this = this;
     $(document).keydown(function(e){
         if (e.keyCode == 37 && _this.left_press == false) { //left
-            _this.fuerza.x-=1;
+            _this.fuerza.x = -1000/(Date.now() - _this.last_left);            
+            _this.last_left = Date.now();
             _this.left_press = true;
         }
         if (e.keyCode == 38 && _this.up_press == false) { //up
-            _this.fuerza.y-=1;
+            _this.fuerza.y = -1000/(Date.now() - _this.last_up);            
+            _this.last_up = Date.now();
             _this.up_press = true;
         }
         if (e.keyCode == 39 && _this.right_press == false) { //right
-            _this.fuerza.x+=1;
+            _this.fuerza.x = 1000/(Date.now() - _this.last_right);            
+            _this.last_right = Date.now();
             _this.right_press = true;
         }
         if (e.keyCode == 40 && _this.down_press == false) { //down
-            _this.fuerza.y+=1;
+            _this.fuerza.y = 1000/(Date.now() - _this.last_down);            
+            _this.last_down = Date.now();
             _this.down_press = true;
         }
     });
