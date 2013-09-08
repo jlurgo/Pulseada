@@ -14,7 +14,8 @@ Bolita.prototype.start = function () {
                                 function (mensaje) { _this.fuerzaRecibida(mensaje); });
 
     this.velocidad = new paper.Point(0, 0);
-    this.fuerza = new paper.Point(0, 0);
+    this.fuerzaResultante = new paper.Point(0, 0);
+    this.fuerzas = [];
     this.posicion = paper.project.view.center.clone();
 
     this.periodoDeMuestreo_ms = 200;
@@ -26,49 +27,33 @@ Bolita.prototype.start = function () {
     };
     setInterval(function () {
         _this.actualizarPosicion();
-    }, this.periodoDeMuestreo);
-
-    this.vista_fuerza = new paper.Path();
-    
-    this.punta_flecha = new paper.Path();
-    this.punta_flecha.add(new paper.Point(-5, 10));
-    this.punta_flecha.add(new paper.Point(0, 0));
-    this.punta_flecha.add(new paper.Point(5, 10));
-    this.punta_flecha.fillColor = 'blue';
-    this.punta_flecha.closed = true;    
-    this.vista_fuerza.strokeColor = 'blue';    
+    }, this.periodoDeMuestreo);  
 };
 
-Bolita.prototype.fuerzaRecibida = function (fuerza) {
-    this.fuerza = new paper.Point(fuerza.x, fuerza.y);  
+Bolita.prototype.fuerzaRecibida = function (msg_fuerza) {
+    if(this.fuerzas[msg_fuerza.jugador] !== undefined) return;
+    this.fuerzas[msg_fuerza.jugador] = 1;
+    this.fuerzas.push(new VistaFuerza({
+            jugador: msg_fuerza.jugador,
+            vector_inicial: new paper.Point(msg_fuerza.x, msg_fuerza.y),
+            cuerpo_target: this.circulo
+        })
+     );
 };
 
-Bolita.prototype.actualizarPosicion = function (fuerza) {
-    this.velocidad = this.velocidad.add(this.fuerza.multiply(this.periodoDeMuestreo_s * (1 / this.masa)));
+Bolita.prototype.actualizarPosicion = function () {
+    this.actualizarFuerzaResultante();
+    this.velocidad = this.velocidad.add(this.fuerzaResultante.multiply(this.periodoDeMuestreo_s * (1 / this.masa)));
     this.velocidad = this.velocidad.multiply(0.99);
     this.circulo.position = this.circulo.position.add(this.velocidad.multiply(this.periodoDeMuestreo_s));
-    
-    this.vista_fuerza.segments = [
-       [this.circulo.position.add(this.fuerza.multiply(-500))],
-       [this.circulo.position]
-    ];
-    
-    var intersecciones_con_bolita = this.circulo.getIntersections(this.vista_fuerza);
-    this.punta_flecha.remove();
-    if(intersecciones_con_bolita.length>0){
-        var versor_fuerza = this.fuerza.normalize(this.fuerza.length*2);
-        this.vista_fuerza.segments = [
-           [intersecciones_con_bolita[0].point.add(this.fuerza.multiply(-10))],
-           [intersecciones_con_bolita[0].point.add(versor_fuerza.multiply(-0.7))]
-        ]; 
-        this.vista_fuerza.strokeWidth = this.fuerza.length;
-        
-        this.punta_flecha = new paper.Path([intersecciones_con_bolita[0].point.add(versor_fuerza.rotate(135)),
-            intersecciones_con_bolita[0].point,
-            intersecciones_con_bolita[0].point.add(versor_fuerza.rotate(-135))
-        ]);
-        this.punta_flecha.fillColor = 'blue';
-        this.vista_fuerza.strokeColor = 'blue';          
-        this.punta_flecha.closed = true;    
+    for(var i=0; i<this.fuerzas.length; i++){
+        this.fuerzas[i].dibujar();
+    }
+};
+
+Bolita.prototype.actualizarFuerzaResultante = function () {    
+    this.fuerzaResultante = new paper.Point(0, 0);
+    for(var i=0; i<this.fuerzas.length; i++){
+        this.fuerzaResultante = this.fuerzaResultante.add(this.fuerzas[i].vector);
     }
 };
