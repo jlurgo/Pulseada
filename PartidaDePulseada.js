@@ -11,7 +11,7 @@ PartidaDePulseada.prototype.start = function(){
                                              new FiltroXClaveValor("partida", this.o.partida)]),
                                 function (mensaje) { _this.solicitudDeUnirseRecibida(mensaje); });
     
-    this.bolita = new Bolita({posicion:{x:0, y:0}, partida:this.o.nombre});
+    this.bolita = new Bolita({partida:this.o.nombre});
     
 };
 

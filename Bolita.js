@@ -3,9 +3,7 @@ var Bolita = function(opt){
     this.start();  
 };
 
-Bolita.prototype.start = function () {
-    this.circulo = new paper.Path.Circle(paper.project.view.center, 30);
-    this.circulo.fillColor = 'red';
+Bolita.prototype.start = function () {   
     this.masa = 50;
     this.portal = new NodoPortalBidi();
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
@@ -13,15 +11,12 @@ Bolita.prototype.start = function () {
     this.velocidad = new paper.Point(0, 0);
     this.fuerzaResultante = new paper.Point(0, 0);
     this.fuerzas = [];
-    this.posicion = paper.project.view.center.clone();
+    this.posicion = new paper.Point(0, 0);
 
     this.periodoDeMuestreo_ms = 200;
     this.periodoDeMuestreo_s = this.periodoDeMuestreo_ms / 1000;
 
     var _this = this;
-    paper.view.onFrame = function (event) {
-        //no se por que no puedo sacar esto. funciona raro.
-    };
     setInterval(function () {
         _this.actualizarPosicion();
     }, this.periodoDeMuestreo);  
@@ -35,7 +30,12 @@ Bolita.prototype.actualizarPosicion = function () {
     this.actualizarFuerzaResultante();
     this.velocidad = this.velocidad.add(this.fuerzaResultante.multiply(this.periodoDeMuestreo_s * (1 / this.masa)));
     this.velocidad = this.velocidad.multiply(0.99);
-    this.circulo.position = this.circulo.position.add(this.velocidad.multiply(this.periodoDeMuestreo_s));
+    this.posicion = this.posicion.add(this.velocidad.multiply(this.periodoDeMuestreo_s));
+    this.portal.enviarMensaje({
+        tipoDeMensaje: "vortex.pulseada.bolita.posicion",
+        partida: this.o.partida,
+        posicion: { x: this.posicion.x, y: this.posicion.y }
+    });
 };
 
 Bolita.prototype.actualizarFuerzaResultante = function () {    
