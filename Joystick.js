@@ -70,7 +70,7 @@ Joystick.prototype.start = function(){
 
 Joystick.prototype.enviarFuerza = function(){
     if(this.ultima_fuerza_enviada.x == this.fuerza.x && this.ultima_fuerza_enviada.y == this.fuerza.y) return;
-    this.portal.enviarMensaje({ tipoDeMensaje: "vortex.pulseada.fuerza",
+    this.portal.enviarMensaje({ tipoDeMensaje: "vortex.pulseada.actualizarFuerza",
                                 jugador:this.o.jugador,
                                 partida: this.o.partida,
                                 x : this.fuerza.x,

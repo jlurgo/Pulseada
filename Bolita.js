@@ -4,17 +4,17 @@ var Bolita = function(opt){
 };
 
 Bolita.prototype.start = function () {   
-    this.masa = 10;
+    this.masa = 1;
     this.portal = new NodoPortalBidi();
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     this.velocidad = new paper.Point(0, 0);
     this.fuerzaResultante = new paper.Point(0, 0);
     this.fuerzas = [];
-    this.posicion = new paper.Point(0, 0);
+    this.posicion = new paper.Point(500, 500);
     this.ultima_posicion_enviada = new paper.Point(0, 0);
     
-    this.periodoDeMuestreo_ms = 1000;
+    this.periodoDeMuestreo_ms = 200;
     this.periodoDeMuestreo_s = this.periodoDeMuestreo_ms / 1000;
 
     var _this = this;
@@ -32,13 +32,18 @@ Bolita.prototype.actualizarPosicion = function () {
     this.velocidad = this.velocidad.add(this.fuerzaResultante.multiply(this.periodoDeMuestreo_s * (1 / this.masa)));
     this.velocidad = this.velocidad.multiply(0.99);
     this.posicion = this.posicion.add(this.velocidad.multiply(this.periodoDeMuestreo_s));
-    
-    if(this.ultima_posicion_enviada.x == this.posicion.x && this.ultima_posicion_enviada.y == this.posicion.y) return;
+
+    if (this.ultima_posicion_enviada.x == this.posicion.x && this.ultima_posicion_enviada.y == this.posicion.y) return;
+
+    for (var i = 0; i < this.fuerzas.length; i++) {
+        this.fuerzas[i].enviar();
+    }
     this.portal.enviarMensaje({
         tipoDeMensaje: "vortex.pulseada.bolita.posicion",
         partida: this.o.partida,
         posicion: { x: this.posicion.x, y: this.posicion.y }
     });
+
     this.ultima_posicion_enviada = this.posicion;
 };
 
