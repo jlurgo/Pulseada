@@ -10,10 +10,11 @@ VistaFuerza.prototype.start = function () {
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     this.portal.pedirMensajes(new FiltroAND([   new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerza"),
+                                                new FiltroXClaveValor("partida", this.o.partida),
                                                 new FiltroXClaveValor("jugador", this.o.jugador)]),
                                 function (mensaje) { _this.fuerzaRecibida(mensaje); });
     
-    this.vector = this.o.vector_inicial;
+    this.vector = new paper.Point(0,0);
     
     var _this = this;
     this.cuerpo_flecha = new paper.Path();

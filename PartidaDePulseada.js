@@ -6,9 +6,9 @@ var PartidaDePulseada = function(opt){
 PartidaDePulseada.prototype.start = function(){
     this.portal = new NodoPortalBidi();
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
-
+    var _this = this;
     this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.unirse"),
-                                             new FiltroXClaveValor("partida", this.o.partida)]),
+                                             new FiltroXClaveValor("partida", this.o.nombre)]),
                                 function (mensaje) { _this.solicitudDeUnirseRecibida(mensaje); });
     
     this.bolita = new Bolita({partida:this.o.nombre});

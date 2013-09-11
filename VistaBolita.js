@@ -7,6 +7,7 @@ VistaBolita.prototype.start = function () {
     this.circulo = new paper.Path.Circle(paper.project.view.center, 30);
     this.circulo.fillColor = 'red';
     this.masa = 50;
+    this.fuerzas = [];
     this.portal = new NodoPortalBidi();
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
@@ -15,11 +16,20 @@ VistaBolita.prototype.start = function () {
         //no se por que no puedo sacar esto. funciona raro.
     };
 
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.bolita.fuerza"),
+    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.bolita.posicion"),
                                                 new FiltroXClaveValor("partida", this.o.partida)]),
                                 function (mensaje) { _this.posicionRecibida(mensaje); });
+    
+    this.cuerpo = this.circulo;
 };
 
 VistaBolita.prototype.posicionRecibida = function (mensaje_posicion) {
-    //this.circulo.position = new paper.Point(mensaje_posicion.posicion.x, mensaje_posicion.posicion.y);
+    this.circulo.position = new paper.Point(mensaje_posicion.posicion.x, mensaje_posicion.posicion.y);
+    for(i=0; i<this.fuerzas.length; i++){
+        this.fuerzas[i].dibujar();
+    }
+};
+
+VistaBolita.prototype.agregarVistaFuerza = function (fuerza) {
+    this.fuerzas.push(fuerza);
 };
