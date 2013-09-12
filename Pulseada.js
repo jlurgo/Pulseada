@@ -1,6 +1,7 @@
 var onDeviceReady = function() {       
-    var clienteHTTP = new NodoClienteHTTP('http://router-vortex.herokuapp.com', 100);             
-    NodoRouter.instancia.conectarBidireccionalmenteCon(clienteHTTP);
+    //var clienteHTTP = new NodoClienteHTTP('http://router-vortex.herokuapp.com', 100);             
+    //var clienteHTTP = new NodoClienteHTTP('http://localhost:3000', 100);             
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(clienteHTTP);
     var inicio = new PantallaDeInicio();
 };
 

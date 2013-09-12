@@ -13,15 +13,24 @@ VistaDeUnaPartida.prototype.start = function () {
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.unirse.confirmacion"),
+    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerzaActual"),
                                              new FiltroXClaveValor("partida", this.o.partida)]),
-                                function (mensaje) { _this.confirmacionRecibida(mensaje); });
+                                function (mensaje) { _this.fuerzaRecibida(mensaje); });
+    
+    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.nuevaMeta"),
+                                             new FiltroXClaveValor("partida", this.o.partida)]),
+                                function (mensaje) { _this.nuevaMetaCreada(mensaje); });
+    
+    this.jugadores = {};
+    this.metas = [];
 };
 
-VistaDeUnaPartida.prototype.confirmacionRecibida = function (confirmacion) {
-    this.bolita.agregarVistaFuerza(new VistaFuerza({
-        jugador: confirmacion.jugador,
-        partida: this.o.partida,
-        cuerpo_target: this.bolita.cuerpo
-    }));
+VistaDeUnaPartida.prototype.fuerzaRecibida = function(fuerza){
+    if(this.jugadores[fuerza.jugador] !== undefined) return;
+    this.jugadores[fuerza.jugador] = true;
+    this.bolita.agregarVistaFuerza(fuerza);
+};
+
+VistaDeUnaPartida.prototype.nuevaMetaCreada = function(meta){
+    this.metas.push(new VistaMeta(meta));
 };

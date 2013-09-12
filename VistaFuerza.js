@@ -6,7 +6,8 @@ var VistaFuerza = function(opt){
 VistaFuerza.prototype.start = function () {
     this.portal = new NodoPortalBidi();
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
-
+    this.jugador = this.o.jugador;
+    var _this = this;
     this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerzaActual"),
                                                 new FiltroXClaveValor("partida", this.o.partida),
                                                 new FiltroXClaveValor("jugador", this.o.jugador)]),
@@ -14,7 +15,6 @@ VistaFuerza.prototype.start = function () {
     
     this.vector = new paper.Point(0,0);
     
-    var _this = this;
     this.cuerpo_flecha = new paper.Path();
     this.punta_flecha = new paper.Path();    
     this.color = {

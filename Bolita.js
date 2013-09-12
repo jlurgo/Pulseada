@@ -4,17 +4,17 @@ var Bolita = function(opt){
 };
 
 Bolita.prototype.start = function () {   
-    this.masa = 1;
+    this.masa = 0.02;
     this.portal = new NodoPortalBidi();
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     this.velocidad = new paper.Point(0, 0);
     this.fuerzaResultante = new paper.Point(0, 0);
     this.fuerzas = [];
-    this.posicion = new paper.Point(500, 500);
+    this.posicion = new paper.Point(50, 50);
     this.ultima_posicion_enviada = new paper.Point(0, 0);
     
-    this.periodoDeMuestreo_ms = 200;
+    this.periodoDeMuestreo_ms = 10;
     this.periodoDeMuestreo_s = this.periodoDeMuestreo_ms / 1000;
 
     var _this = this;
@@ -23,8 +23,12 @@ Bolita.prototype.start = function () {
     }, this.periodoDeMuestreo_ms);  
 };
 
-Bolita.prototype.agregarFuerza = function (fuerza) {
-    this.fuerzas.push(fuerza);
+Bolita.prototype.agregarFuerza = function (fuerza) {  
+    this.fuerzas.push(new Fuerza({
+        partida: this.o.partida,
+        jugador: fuerza.jugador,
+        vector_inicial: new paper.Point(fuerza.x, fuerza.y)
+    }));
 };
 
 Bolita.prototype.actualizarPosicion = function () {

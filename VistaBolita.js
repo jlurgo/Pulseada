@@ -4,7 +4,7 @@ var VistaBolita = function (opt) {
 };
 
 VistaBolita.prototype.start = function () {
-    this.circulo = new paper.Path.Circle(paper.project.view.center, 30);
+    this.circulo = new paper.Path.Circle(new paper.Point(50, 50), 30);
     this.circulo.fillColor = 'red';
     this.masa = 50;
     this.fuerzas = [];
@@ -25,11 +25,16 @@ VistaBolita.prototype.start = function () {
 
 VistaBolita.prototype.posicionRecibida = function (mensaje_posicion) {
     this.circulo.position = new paper.Point(mensaje_posicion.posicion.x, mensaje_posicion.posicion.y);
+    paper.project.view.center = this.circulo.position;
     for (i = 0; i < this.fuerzas.length; i++) {
         this.fuerzas[i].dibujar();
     }
 };
 
 VistaBolita.prototype.agregarVistaFuerza = function (fuerza) {
-    this.fuerzas.push(fuerza);
+    this.fuerzas.push(new VistaFuerza({
+        jugador: fuerza.jugador,
+        partida: this.o.partida,
+        cuerpo_target: this.circulo
+    }));
 };
