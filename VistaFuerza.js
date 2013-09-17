@@ -13,7 +13,7 @@ VistaFuerza.prototype.start = function () {
                                                 new FiltroXClaveValor("jugador", this.o.jugador)]),
                                 function (mensaje) { _this.fuerzaRecibida(mensaje); });
     
-    this.vector = new paper.Point(0,0);
+    this.vector = this.o.fuerza_inicial;
     
     this.color = {
 		hue: Math.random() * 360,

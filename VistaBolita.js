@@ -4,7 +4,7 @@ var VistaBolita = function (opt) {
 };
 
 VistaBolita.prototype.start = function () {
-    this.circulo = new paper.Path.Circle(new paper.Point(50, 50), 30);
+    this.circulo = new paper.Path.Circle(new paper.Point(700, 300), 30);
     this.circulo.fillColor = 'red';
     this.masa = 50;
     this.fuerzas = [];
@@ -35,6 +35,7 @@ VistaBolita.prototype.agregarVistaFuerza = function (fuerza) {
     this.fuerzas.push(new VistaFuerza({
         jugador: fuerza.jugador,
         partida: this.o.partida,
-        cuerpo_target: this.circulo
+        cuerpo_target: this.circulo,
+        fuerza_inicial: new paper.Point(fuerza.x, fuerza.y)
     }));
 };
