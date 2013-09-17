@@ -9,7 +9,7 @@ Fuerza.prototype.start = function () {
 
     this.jugador = this.o.jugador;
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.actualizarFuerza"),
+    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerza"),
                                              new FiltroXClaveValor("partida", this.o.partida),
                                              new FiltroXClaveValor("jugador", this.o.jugador)]),
                                 function (mensaje) { _this.fuerzaRecibida(mensaje); });
@@ -18,13 +18,4 @@ Fuerza.prototype.start = function () {
 
 Fuerza.prototype.fuerzaRecibida = function (msg_fuerza) {
     this.vector = new paper.Point(msg_fuerza.x, msg_fuerza.y);
-};
-
-Fuerza.prototype.enviar = function () {
-    this.portal.enviarMensaje({ tipoDeMensaje: "vortex.pulseada.fuerzaActual",
-        jugador: this.o.jugador,
-        partida: this.o.partida,
-        x: this.vector.x,
-        y: this.vector.y
-    });
 };

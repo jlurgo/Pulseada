@@ -16,12 +16,14 @@ PantallaDeInicio.prototype.start = function (un_panel) {
         var nombre_partida = _this.txt_nombre_partida.val();
         var vista_partida = new VistaDeUnaPartida({partida: nombre_partida});
         var partida = new PartidaDePulseada({ nombre: nombre_partida});
-        var jugador_1 = new Jugador({ nombre: _this.txt_nombre_jugador_1.val(),
+        var jugador_1 = new Joystick({ jugador: _this.txt_nombre_jugador_1.val(),
             partida: nombre_partida,
+            posicion_vista: new paper.Point(100, paper.project.view.size.height - 100),
             cursores: { left: 37, up: 38, right: 39, down: 40 }
         });
-        var jugador_2 = new Jugador({ nombre: _this.txt_nombre_jugador_2.val(),
+        var jugador_2 = new Joystick({ jugador: _this.txt_nombre_jugador_2.val(),
             partida: nombre_partida,
+            posicion_vista: new paper.Point(paper.project.view.size.width - 100, paper.project.view.size.height - 100),
             cursores: { left: 65, up: 87, right: 68, down: 83}
         });
         
@@ -31,15 +33,17 @@ PantallaDeInicio.prototype.start = function (un_panel) {
     
     this.btn_unirse_a_partida.click(function () {
         var nombre_partida = _this.txt_nombre_partida.val();
-        var jugador_1 = new Jugador({ nombre: _this.txt_nombre_jugador_1.val(),
+        var vista_partida = new VistaDeUnaPartida({partida: nombre_partida});
+        var jugador_1 = new Joystick({ jugador: _this.txt_nombre_jugador_1.val(),
             partida: nombre_partida,
+            posicion_vista: new paper.Point(100, paper.project.view.size.height - 100),
             cursores: { left: 37, up: 38, right: 39, down: 40 }
         });
-        var jugador_2 = new Jugador({ nombre: _this.txt_nombre_jugador_2.val(),
+        var jugador_2 = new Joystick({ jugador: _this.txt_nombre_jugador_2.val(),
             partida: nombre_partida,
+            posicion_vista: new paper.Point(paper.project.view.size.width - 100, paper.project.view.size.height - 100),
             cursores: { left: 65, up: 87, right: 68, down: 83}
         });
-        var vista_partida = new VistaDeUnaPartida({partida: nombre_partida});
         var pantalla_pulseada = $("#pantalla_pulseada");
         $.mobile.changePage(pantalla_pulseada, { transition: "flip" });
     });

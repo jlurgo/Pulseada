@@ -13,13 +13,9 @@ VistaDeUnaPartida.prototype.start = function () {
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerzaActual"),
+    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerza"),
                                              new FiltroXClaveValor("partida", this.o.partida)]),
                                 function (mensaje) { _this.fuerzaRecibida(mensaje); });
-    
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.nuevaMeta"),
-                                             new FiltroXClaveValor("partida", this.o.partida)]),
-                                function (mensaje) { _this.nuevaMetaCreada(mensaje); });
     
     this.jugadores = {};
     this.metas = [];
@@ -31,6 +27,6 @@ VistaDeUnaPartida.prototype.fuerzaRecibida = function(fuerza){
     this.bolita.agregarVistaFuerza(fuerza);
 };
 
-VistaDeUnaPartida.prototype.nuevaMetaCreada = function(meta){
+VistaDeUnaPartida.prototype.posicionRecibida = function(meta){
     this.metas.push(new VistaMeta(meta));
 };

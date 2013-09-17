@@ -7,28 +7,38 @@ PartidaDePulseada.prototype.start = function(){
     this.portal = new NodoPortalBidi();
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.actualizarFuerza"),
+    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerza"),
                                              new FiltroXClaveValor("partida", this.o.nombre)]),
                                 function (mensaje) { _this.fuerzaRecibida(mensaje); });
     
     this.bolita = new Bolita({partida:this.o.nombre});
     this.jugadores = {};
-    this.metas = [];
 };
 
 PartidaDePulseada.prototype.fuerzaRecibida = function(fuerza){
-    if(this.jugadores[fuerza.jugador] !== undefined) return;
-    this.jugadores[fuerza.jugador] = true;
-    this.bolita.agregarFuerza(fuerza);
-    var meta = new Meta({
-        jugador: fuerza.jugador
-    });
-    this.metas.push(meta);
-    this.portal.enviarMensaje({
-        tipoDeMensaje: "vortex.pulseada.nuevaMeta",
-        partida: this.o.partida,
-        posicion: { x: meta.posicion.x, y: meta.posicion.y },
-        jugador: fuerza.jugador,
-        radio: meta.radio
-    });
+    if(this.jugadores[fuerza.jugador] !== undefined) {
+        this.jugadores[fuerza.jugador].fuerza_recibida = true;
+    } else {
+        this.jugadores[fuerza.jugador] = {fuerza_recibida : true};
+        this.bolita.agregarFuerza(fuerza);
+    }
+    if(this.todasLasFuerzasRecibidas()){ 
+        this.bolita.actualizarPosicion();
+        this.blanquearFuerzasRecibidas();
+    }
+    console.log("Fuerza del jugador " + fuerza.jugador + " recibida: " + JSON.stringify(fuerza));
+};
+
+PartidaDePulseada.prototype.todasLasFuerzasRecibidas = function(){
+    var todas_recibidas = true;
+    for(var jugador in this.jugadores){
+        if(this.jugadores[jugador].fuerza_recibida == false) todas_recibidas = false;
+    }
+    return todas_recibidas;
+};
+
+PartidaDePulseada.prototype.blanquearFuerzasRecibidas = function(){
+    for(var jugador in this.jugadores){
+        this.jugadores[jugador].fuerza_recibida = false;
+    }
 };

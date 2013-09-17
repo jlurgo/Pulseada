@@ -4,7 +4,7 @@ var Bolita = function(opt){
 };
 
 Bolita.prototype.start = function () {   
-    this.masa = 0.02;
+    this.masa = 0.5;
     this.portal = new NodoPortalBidi();
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
@@ -12,15 +12,11 @@ Bolita.prototype.start = function () {
     this.fuerzaResultante = new paper.Point(0, 0);
     this.fuerzas = [];
     this.posicion = new paper.Point(50, 50);
-    this.ultima_posicion_enviada = new paper.Point(0, 0);
-    
-    this.periodoDeMuestreo_ms = 10;
-    this.periodoDeMuestreo_s = this.periodoDeMuestreo_ms / 1000;
-
+    this.periodo_minimo = 200;
     var _this = this;
-    setInterval(function () {
+    this.proceso_inicial = setInterval(function(){
         _this.actualizarPosicion();
-    }, this.periodoDeMuestreo_ms);  
+    }, this.periodo_minimo);
 };
 
 Bolita.prototype.agregarFuerza = function (fuerza) {  
@@ -29,26 +25,31 @@ Bolita.prototype.agregarFuerza = function (fuerza) {
         jugador: fuerza.jugador,
         vector_inicial: new paper.Point(fuerza.x, fuerza.y)
     }));
+    clearInterval(this.proceso_inicial);
 };
 
 Bolita.prototype.actualizarPosicion = function () {
-    this.actualizarFuerzaResultante();
-    this.velocidad = this.velocidad.add(this.fuerzaResultante.multiply(this.periodoDeMuestreo_s * (1 / this.masa)));
-    this.velocidad = this.velocidad.multiply(0.99);
-    this.posicion = this.posicion.add(this.velocidad.multiply(this.periodoDeMuestreo_s));
-
-    if (this.ultima_posicion_enviada.x == this.posicion.x && this.ultima_posicion_enviada.y == this.posicion.y) return;
-
-    for (var i = 0; i < this.fuerzas.length; i++) {
-        this.fuerzas[i].enviar();
-    }
-    this.portal.enviarMensaje({
-        tipoDeMensaje: "vortex.pulseada.bolita.posicion",
-        partida: this.o.partida,
-        posicion: { x: this.posicion.x, y: this.posicion.y }
-    });
-
-    this.ultima_posicion_enviada = this.posicion;
+    var now = Date.now();
+    if(this.ultima_muestra === undefined) this.ultima_muestra = now;
+    var periodoDeMuestreo_ms = (now - this.ultima_muestra);
+    var timeout = this.periodo_minimo - periodoDeMuestreo_ms;
+    if(timeout<0) timeout = 0;
+    if(this.periodo_minimo>periodoDeMuestreo_ms) periodoDeMuestreo_ms = this.periodo_minimo;
+    this.ultima_muestra = now + timeout;
+    var periodoDeMuestreo_s = this.periodo_minimo * 5 / 1000; 
+    
+    var _this = this;
+    setTimeout(function(){
+        _this.actualizarFuerzaResultante();
+        _this.velocidad = _this.velocidad.add(_this.fuerzaResultante.multiply(periodoDeMuestreo_s * (1 / _this.masa)));
+        _this.posicion = _this.posicion.add(_this.velocidad.multiply(periodoDeMuestreo_s));
+        _this.velocidad = _this.velocidad.multiply(0.75);
+        _this.portal.enviarMensaje({
+            tipoDeMensaje: "vortex.pulseada.bolita.posicion",
+            partida: _this.o.partida,
+            posicion: { x: _this.posicion.x, y: _this.posicion.y }
+        });        
+    }, timeout);
 };
 
 Bolita.prototype.actualizarFuerzaResultante = function () {    
