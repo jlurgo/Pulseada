@@ -15,14 +15,18 @@ VistaFuerza.prototype.start = function () {
     
     this.vector = new paper.Point(0,0);
     
-    this.cuerpo_flecha = new paper.Path();
-    this.punta_flecha = new paper.Path();    
     this.color = {
 		hue: Math.random() * 360,
 		saturation: 1,
 		brightness: 1
 	};
-
+    
+    this.cuerpo_flecha = new paper.Path();
+    this.punta_flecha = new paper.Path();   
+    this.txt_nombre_jugador = new paper.PointText(50,50);
+    this.txt_nombre_jugador.fillColor = this.color;
+    this.txt_nombre_jugador.content = this.o.jugador;
+    this.txt_nombre_jugador.visible = false;
 };
 
 VistaFuerza.prototype.fuerzaRecibida = function (msg_fuerza) {
@@ -62,5 +66,12 @@ VistaFuerza.prototype.dibujar = function () {
         
         this.cuerpo_flecha.opacity = 0.5;
         this.punta_flecha.opacity = 0.5;
+        
+        this.txt_nombre_jugador.visible = true;
+        this.txt_nombre_jugador.angle = this.cuerpo_flecha.segments[0].getPoint().angle;
+        this.txt_nombre_jugador.point = this.cuerpo_flecha.segments[0].getPoint();
+    }else{
+        this.txt_nombre_jugador.visible = false;
     }
+    
 };
