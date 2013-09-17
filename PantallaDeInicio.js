@@ -31,14 +31,14 @@ PantallaDeInicio.prototype.iniciarVistaYJugadores = function () {
     if(nombre_jugador_1 != ""){
         var jugador_1 = new Joystick({ jugador: nombre_jugador_1,
             partida: nombre_partida,
-            posicion_vista: new paper.Point(100, paper.project.view.size.height - 100),
+            posicion_vista: new paper.Point(paper.project.view.size.width - 100, paper.project.view.size.height - 100),
             cursores: { left: 37, up: 38, right: 39, down: 40 }
         });
     }
     if(nombre_jugador_2 != ""){
         var jugador_2 = new Joystick({ jugador: nombre_jugador_2,
             partida: nombre_partida,
-            posicion_vista: new paper.Point(paper.project.view.size.width - 100, paper.project.view.size.height - 100),
+            posicion_vista: new paper.Point(100, paper.project.view.size.height - 100), 
             cursores: { left: 65, up: 87, right: 68, down: 83}
         });
     }    
