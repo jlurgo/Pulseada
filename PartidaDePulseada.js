@@ -19,8 +19,16 @@ PartidaDePulseada.prototype.fuerzaRecibida = function(fuerza){
     if(this.jugadores[fuerza.jugador] !== undefined) {
         this.jugadores[fuerza.jugador].fuerza_recibida = true;
     } else {
-        this.jugadores[fuerza.jugador] = {fuerza_recibida : true};
+        this.jugadores[fuerza.jugador] = {
+            fuerza_recibida : true,
+            meta: new Meta({
+                partida:this.o.nombre,
+                jugador: fuerza.jugador,
+                radio: 80
+            })
+        };
         this.bolita.agregarFuerza(fuerza);
+        
     }
     if(this.todasLasFuerzasRecibidas()){ 
         this.bolita.actualizarPosicion();

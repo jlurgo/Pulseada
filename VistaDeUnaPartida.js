@@ -17,16 +17,20 @@ VistaDeUnaPartida.prototype.start = function () {
                                              new FiltroXClaveValor("partida", this.o.partida)]),
                                 function (mensaje) { _this.fuerzaRecibida(mensaje); });
     
+    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.meta"),
+                                             new FiltroXClaveValor("partida", this.o.partida)]),
+                                function (mensaje) { _this.metaRecibida(mensaje); });
     this.jugadores = {};
     this.metas = [];
 };
 
 VistaDeUnaPartida.prototype.fuerzaRecibida = function(fuerza){
     if(this.jugadores[fuerza.jugador] !== undefined) return;
-    this.jugadores[fuerza.jugador] = true;
+    this.jugadores[fuerza.jugador] = {};
     this.bolita.agregarVistaFuerza(fuerza);
 };
 
-VistaDeUnaPartida.prototype.posicionRecibida = function(meta){
-    this.metas.push(new VistaMeta(meta));
+VistaDeUnaPartida.prototype.metaRecibida = function(meta){
+    if(this.jugadores[meta.jugador].meta !== undefined) return;
+    this.jugadores[meta.jugador].meta = new VistaMeta(meta);
 };
