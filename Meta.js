@@ -22,7 +22,12 @@ Meta.prototype.posicionBolitaRecibida = function(posicion_bolita) {
 };
 
 Meta.prototype.ubicarseAlrededorDe = function (punto_referencia) { 
-    this.posicion = punto_referencia.add(paper.Point.random().add(-0.5).multiply(500));
+    var x_random = Math.random();
+    var y_random = Math.random();
+    x_random = x_random - 0.5;
+    y_random = y_random - 0.5;
+    
+    this.posicion = punto_referencia.add(new paper.Point(x_random, y_random).normalize(1).multiply(250));
     if(this.circulo) this.circulo.remove();
     this.circulo = new paper.Path.Circle(this.posicion, this.radio);
     this.enviarPosicion();
