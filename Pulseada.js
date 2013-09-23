@@ -7,8 +7,7 @@ var onDeviceReady = function() {
     //var socket = io.connect('http://router-vortex.herokuapp.com');
     //var conector_socket = new NodoConectorSocket(socket);    
     //NodoRouter.instancia.conectarBidireccionalmenteCon(conector_socket);
-    
-    var inicio = new PantallaDeInicio();
+    var inicio = new PantallaDeInicio();    
 };
 
 $(document).ready(function() {  

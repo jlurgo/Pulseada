@@ -20,11 +20,7 @@ Bolita.prototype.start = function () {
 };
 
 Bolita.prototype.agregarFuerza = function (fuerza) {  
-    this.fuerzas.push(new Fuerza({
-        partida: this.o.partida,
-        jugador: fuerza.jugador,
-        vector_inicial: new paper.Point(fuerza.x, fuerza.y)
-    }));
+    this.fuerzas.push(fuerza);
     clearInterval(this.proceso_inicial);
 };
 

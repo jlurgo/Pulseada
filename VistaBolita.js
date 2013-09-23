@@ -12,9 +12,6 @@ VistaBolita.prototype.start = function () {
     NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     var _this = this;
-    paper.view.onFrame = function (event) {
-        //no se por que no puedo sacar esto. funciona raro.
-    };
 
     this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.bolita.posicion"),
                                                 new FiltroXClaveValor("partida", this.o.partida)]),
@@ -32,10 +29,5 @@ VistaBolita.prototype.posicionRecibida = function (mensaje_posicion) {
 };
 
 VistaBolita.prototype.agregarVistaFuerza = function (fuerza) {
-    this.fuerzas.push(new VistaFuerza({
-        jugador: fuerza.jugador,
-        partida: this.o.partida,
-        cuerpo_target: this.circulo,
-        fuerza_inicial: new paper.Point(fuerza.x, fuerza.y)
-    }));
+    this.fuerzas.push(fuerza);
 };

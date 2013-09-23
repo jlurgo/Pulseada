@@ -92,11 +92,14 @@ Joystick.prototype.actualizarProgresoDeConteoDePulsaciones = function(meta){
 };
 
 Joystick.prototype.enviarFuerza = function(){
-    this.portal.enviarMensaje({ tipoDeMensaje: "vortex.pulseada.fuerza",
+    var tipo_de_mensaje = "vortex.pulseada.fuerza";
+    if(!this.joineado) tipo_de_mensaje = "vortex.pulseada.join"
+    this.portal.enviarMensaje({ tipoDeMensaje: tipo_de_mensaje,
                                 jugador: this.o.jugador,
                                 partida: this.o.partida,
                                 x: this.pulsaciones.x,
                                 y: this.pulsaciones.y
                               });
+    this.joineado = true;
 };
 

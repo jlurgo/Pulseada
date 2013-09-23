@@ -1,5 +1,5 @@
 var Jugador = function(opt){  
-    this.o = opt;
+    $.extend(true, this, opt);
     this.start();  
 };
 
