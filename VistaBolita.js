@@ -22,7 +22,7 @@ VistaBolita.prototype.start = function () {
 
 VistaBolita.prototype.posicionRecibida = function (mensaje_posicion) {
     this.circulo.position = new paper.Point(mensaje_posicion.posicion.x, mensaje_posicion.posicion.y);
-    //paper.project.view.center = this.circulo.position;
+    paper.project.view.center = this.circulo.position;
     for (i = 0; i < this.fuerzas.length; i++) {
         this.fuerzas[i].dibujar();
     }

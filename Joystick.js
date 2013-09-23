@@ -62,14 +62,17 @@ Joystick.prototype.start = function(){
     this.contando = false;
 };
 
-Joystick.prototype.posicionRecibida = function(meta){
+Joystick.prototype.posicionRecibida = function(posicion){
     if(!(this.contando)){
         this.pulsaciones.x = 0;
         this.pulsaciones.y = 0;
         this.pasoActualDeProgreso = 0;
         this.tortaDeProgreso.removeSegments();
         this.tortaDeProgreso.fillColor = 'yellow';
-        this.tortaDeProgreso.add(this.o.posicion_vista);
+        this.tortaDeProgreso.add(new paper.Point(posicion.posicion.x, posicion.posicion.y));
+        this.poligono_auxiliar.remove();
+        this.poligono_auxiliar = new paper.Path.RegularPolygon(new paper.Point(posicion.posicion.x, posicion.posicion.y), this.pasosDeProgreso * 2, 25);
+        this.poligono_auxiliar.rotate(180);
         this.tortaDeProgreso.add(this.poligono_auxiliar.segments[0].getPoint());
         this.actualizarProgresoDeConteoDePulsaciones();
     }

@@ -11,25 +11,19 @@ Meta.prototype.start = function () {
     this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.bolita.posicion"),
                                              new FiltroXClaveValor("partida", this.partida)]),
                                 function (mensaje) { _this.posicionBolitaRecibida(mensaje); });
-//    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.join"),
-//                                             new FiltroXClaveValor("partida", this.partida)]),
-//                                function (mensaje) { _this.enviarPosicion(); });
-    
-    this.circulo = new paper.Path.Circle(new paper.Point(0,0), this.radio);
-    this.circulo.fillColor = 'red';
-    this.circulo.opacity = 0;
-    this.ubicarse();
+    this.ubicarseAlrededorDe(this.punto_de_referencia);
 };
 
 Meta.prototype.posicionBolitaRecibida = function(posicion_bolita) {  
-    if(this.circulo.contains(new paper.Point(posicion_bolita.posicion.x, posicion_bolita.posicion.y))){
-        this.ubicarse();
+    var pos_bolita = new paper.Point(posicion_bolita.posicion.x, posicion_bolita.posicion.y);
+    if(this.circulo.contains(pos_bolita)){
+        this.ubicarseAlrededorDe(pos_bolita);
     }
 };
 
-Meta.prototype.ubicarse = function () { 
-    this.posicion = paper.project.view.center.multiply(paper.Point.random());
-    this.circulo.remove();
+Meta.prototype.ubicarseAlrededorDe = function (punto_referencia) { 
+    this.posicion = punto_referencia.add(paper.Point.random().add(-0.5).multiply(500));
+    if(this.circulo) this.circulo.remove();
     this.circulo = new paper.Path.Circle(this.posicion, this.radio);
     this.enviarPosicion();
 };

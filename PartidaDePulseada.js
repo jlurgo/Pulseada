@@ -26,7 +26,8 @@ PartidaDePulseada.prototype.jugadorUniendose = function(solicitud){
             meta: new Meta({
                 partida:this.o.nombre,
                 jugador: solicitud.jugador,
-                radio: 80
+                radio: 80,
+                punto_de_referencia: this.bolita.posicion
             }),
             fuerza: new Fuerza({
                 partida: this.o.nombre,
