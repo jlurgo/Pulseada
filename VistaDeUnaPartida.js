@@ -21,6 +21,10 @@ VistaDeUnaPartida.prototype.start = function () {
                                              new FiltroXClaveValor("partida", this.o.partida)]),
                                 function (mensaje) { _this.jugadorRecibido(mensaje); });
     
+    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.bolita.posicion"),
+                                             new FiltroXClaveValor("partida", this.o.partida)]),
+                                function (mensaje) { _this.posicionRecibida(mensaje); });
+    
     this.jugadores = {};
     this.metas = [];
     this.contenedor_marcadores_de_goles = $('#contenedor_marcadores_de_goles');
@@ -51,3 +55,27 @@ VistaDeUnaPartida.prototype.jugadorRecibido = function(jugador){
     this.jugadores[jugador.nombre].marcador.dibujarEn(this.contenedor_marcadores_de_goles)
 };
 
+VistaDeUnaPartida.prototype.posicionRecibida = function(pos){
+    this.moverVistaHacia(new paper.Point(pos.posicion.x, pos.posicion.y));
+};
+
+VistaDeUnaPartida.prototype.moverVistaHacia = function(posicion){
+    this.pasos_animacion_paneo = 10;
+    this.periodo_animacion_paneo = 50;
+    this.paso_actual_animacion_paneo = 0;
+    this.vector_animacion_paneo = posicion.add(paper.project.view.center.multiply(-1));
+    this.vector_animacion_paneo = this.vector_animacion_paneo.normalize(this.vector_animacion_paneo.length/this.pasos_animacion_paneo);
+    
+    this.avanzarFrameAnimacionPaneo();
+};
+
+VistaDeUnaPartida.prototype.avanzarFrameAnimacionPaneo = function(){
+    paper.project.view.center = paper.project.view.center.add(this.vector_animacion_paneo);
+    this.paso_actual_animacion_paneo += 1;
+    if(this.paso_actual_animacion_paneo<this.pasos_animacion_paneo){
+        var _this = this;
+        setTimeout(function(){
+            _this.avanzarFrameAnimacionPaneo();
+        }, this.periodo_animacion_paneo);
+    }
+};
