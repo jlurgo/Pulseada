@@ -25,6 +25,7 @@ html, body {
     right    : 0;
     bottom   : 0px;
     left     : 0;
+    background-image:none;
 }
 
 /*absolutely position the footer to the bottom of the page*/
@@ -39,4 +40,15 @@ html, body {
 #canvas_campo_de_juego{
     height:100%;
     width:100%;
+}
+
+#contenedor_marcadores_de_goles{
+    position:absolute;
+    top:20px;
+    right:30px;
+}
+
+.marcador_de_goles{
+    color: yellow;
+    text-align:right;
 }

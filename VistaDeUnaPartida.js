@@ -21,11 +21,9 @@ VistaDeUnaPartida.prototype.start = function () {
                                              new FiltroXClaveValor("partida", this.o.partida)]),
                                 function (mensaje) { _this.jugadorRecibido(mensaje); });
     
-//    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.meta"),
-//                                             new FiltroXClaveValor("partida", this.o.partida)]),
-//                                function (mensaje) { _this.metaRecibida(mensaje); });
     this.jugadores = {};
     this.metas = [];
+    this.contenedor_marcadores_de_goles = $('#contenedor_marcadores_de_goles');
 };
 
 VistaDeUnaPartida.prototype.jugadorRecibido = function(jugador){
@@ -42,12 +40,14 @@ VistaDeUnaPartida.prototype.jugadorRecibido = function(jugador){
             jugador: jugador.nombre,
             cuerpo_target: this.bolita.cuerpo,
             fuerza_inicial: new paper.Point(jugador.fuerza.x, jugador.fuerza.y)
+        }),
+        marcador: new MarcadorDeGoles({
+            partida: jugador.partida,
+            jugador: jugador.nombre,
+            goles: jugador.goles
         })
     };
     this.bolita.agregarVistaFuerza(this.jugadores[jugador.nombre].fuerza);
+    this.jugadores[jugador.nombre].marcador.dibujarEn(this.contenedor_marcadores_de_goles)
 };
-//
-//VistaDeUnaPartida.prototype.metaRecibida = function(meta){
-//    if(this.jugadores[meta.jugador].meta !== undefined) return;
-//    this.jugadores[meta.jugador].meta = new VistaMeta(meta);
-//};
+

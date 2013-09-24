@@ -17,6 +17,11 @@ Meta.prototype.start = function () {
 Meta.prototype.posicionBolitaRecibida = function(posicion_bolita) {  
     var pos_bolita = new paper.Point(posicion_bolita.posicion.x, posicion_bolita.posicion.y);
     if(this.circulo.contains(pos_bolita)){
+        this.portal.enviarMensaje({
+            tipoDeMensaje:"vortex.pulseada.gol",
+            partida: this.partida,
+            jugador: this.jugador
+        });
         this.ubicarseAlrededorDe(pos_bolita);
     }
 };

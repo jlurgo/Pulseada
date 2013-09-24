@@ -15,6 +15,10 @@ PartidaDePulseada.prototype.start = function(){
                                              new FiltroXClaveValor("partida", this.o.nombre)]),
                                 function (mensaje) { _this.fuerzaRecibida(mensaje); });
     
+     this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.gol"),
+                                             new FiltroXClaveValor("partida", this.o.nombre)]),
+                                function (mensaje) { _this.golRecibido(mensaje); });
+    
     this.bolita = new Bolita({partida:this.o.nombre});
     this.jugadores = {};
 };
@@ -33,7 +37,8 @@ PartidaDePulseada.prototype.jugadorUniendose = function(solicitud){
                 partida: this.o.nombre,
                 jugador: solicitud.jugador,
                 vector_inicial: new paper.Point(solicitud.x, solicitud.y)
-            })
+            }),
+            goles: 0
         };
         this.bolita.agregarFuerza(this.jugadores[solicitud.jugador].fuerza);
         this.enviarJugadores();
@@ -53,6 +58,10 @@ PartidaDePulseada.prototype.fuerzaRecibida = function(fuerza){
         this.blanquearFuerzasRecibidas();
     }
     console.log("Fuerza del jugador " + fuerza.jugador + " recibida: " + JSON.stringify(fuerza));
+};
+
+PartidaDePulseada.prototype.golRecibido = function(gol){
+    this.jugadores[gol.jugador].goles += 1;
 };
 
 PartidaDePulseada.prototype.todasLasFuerzasRecibidas = function(){
@@ -85,7 +94,8 @@ PartidaDePulseada.prototype.enviarJugadores = function(){
                     y: this.jugadores[jugador].meta.posicion.y
                 },
                 radio: this.jugadores[jugador].meta.radio
-            }
+            },
+            goles: this.jugadores[jugador].goles
         });
     }
 };
