@@ -27,9 +27,13 @@ VistaMeta.prototype.dibujar = function(){
     if(this.txt_nombre_jugador) this.txt_nombre_jugador.remove();
     
     this.circulo = new paper.Path.Circle(this.posicion, this.o.radio);
-    this.circulo.fillColor = 'red';
-    this.circulo.opacity = 0.2;
+    this.circulo.strokeColor = '#ff0000';
+    this.circulo.strokeWidth = 5;
+    this.circulo.strokeCap = 'round';    
+    this.circulo.dashArray = [10, 12];
+    
     this.txt_nombre_jugador = new paper.PointText(this.posicion);
     this.txt_nombre_jugador.fillColor = 'red';
-    this.txt_nombre_jugador.content = this.o.jugador;    
+    this.txt_nombre_jugador.content = this.o.jugador;  
+    this.txt_nombre_jugador.justification = 'center';
 };

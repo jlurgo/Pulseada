@@ -26,6 +26,7 @@ VistaFuerza.prototype.start = function () {
     this.txt_nombre_jugador = new paper.PointText(50,50);
     this.txt_nombre_jugador.fillColor = this.color;
     this.txt_nombre_jugador.content = this.o.jugador;
+    this.txt_nombre_jugador.justification = 'center';
     this.txt_nombre_jugador.visible = false;
 };
 
