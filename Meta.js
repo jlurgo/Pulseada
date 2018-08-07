@@ -4,20 +4,20 @@ var Meta = function(opt){
 };
 
 Meta.prototype.start = function () {   
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
     
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.bolita.posicion"),
-                                             new FiltroXClaveValor("partida", this.partida)]),
-                                function (mensaje) { _this.posicionBolitaRecibida(mensaje); });
+    Vx.when({   tipoDeMensaje: "vortex.pulseada.bolita.posicion",
+                partida: this.partida},
+            function (mensaje) { _this.posicionBolitaRecibida(mensaje); });
     this.ubicarseAlrededorDe(this.punto_de_referencia);
 };
 
 Meta.prototype.posicionBolitaRecibida = function(posicion_bolita) {  
     var pos_bolita = new paper.Point(posicion_bolita.posicion.x, posicion_bolita.posicion.y);
     if(this.circulo.contains(pos_bolita)){
-        this.portal.enviarMensaje({
+        Vx.send({
             tipoDeMensaje:"vortex.pulseada.gol",
             partida: this.partida,
             jugador: this.jugador
@@ -39,7 +39,7 @@ Meta.prototype.ubicarseAlrededorDe = function (punto_referencia) {
 };
 
 Meta.prototype.enviarPosicion = function () { 
-    this.portal.enviarMensaje({
+    Vx.send({
             tipoDeMensaje:"vortex.pulseada.meta",
             partida: this.partida,
             jugador: this.jugador,

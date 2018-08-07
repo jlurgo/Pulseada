@@ -4,8 +4,8 @@ var Jugador = function(opt){
 };
 
 Jugador.prototype.start = function () {
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
     
     this.joystick = new Joystick({
         partida: this.o.partida,

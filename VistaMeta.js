@@ -4,14 +4,14 @@ var VistaMeta = function(opt){
 };
 
 VistaMeta.prototype.start = function () {   
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+   // NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.meta"),
-                                             new FiltroXClaveValor("partida", this.o.partida),
-                                            new FiltroXClaveValor("jugador", this.o.jugador)]),
-                                function (mensaje) { _this.metaRecibida(mensaje); });
+    Vx.when({tipoDeMensaje: "vortex.pulseada.meta",
+             partida: this.o.partida,
+             jugador: this.o.jugador},
+             function (mensaje) { _this.metaRecibida(mensaje); });
     
     this.posicion = new paper.Point(this.o.posicion.x, this.o.posicion.y);
     this.dibujar();

@@ -4,15 +4,15 @@ var Fuerza = function(opt){
 };
 
 Fuerza.prototype.start = function () {
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     this.jugador = this.o.jugador;
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerza"),
-                                             new FiltroXClaveValor("partida", this.o.partida),
-                                             new FiltroXClaveValor("jugador", this.o.jugador)]),
-                                function (mensaje) { _this.fuerzaRecibida(mensaje); });
+    Vx.when({   tipoDeMensaje: "vortex.pulseada.fuerza",
+                partida: this.o.partida,
+                jugador: this.o.jugador},
+            function (mensaje) { _this.fuerzaRecibida(mensaje); });
     this.vector = new paper.Point(0, 0);
 };
 

@@ -4,8 +4,8 @@ var Joystick = function(opt){
 };
 
 Joystick.prototype.start = function(){
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
     this.fuerza = {x:0, y:0};
     this.pulsaciones = {x:0, y:0};
     
@@ -52,9 +52,9 @@ Joystick.prototype.start = function(){
         }
     });
     
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.bolita.posicion"),
-                                             new FiltroXClaveValor("partida", this.o.partida)]),
-                                function (mensaje) { _this.posicionRecibida(mensaje); });
+    Vx.when({   tipoDeMensaje: "vortex.pulseada.bolita.posicion",
+                partida: this.o.partida},
+                function (mensaje) { _this.posicionRecibida(mensaje); });
     
     this.poligono_auxiliar = new paper.Path.RegularPolygon(this.o.posicion_vista, this.pasosDeProgreso * 2, 30);
     this.poligono_auxiliar.rotate(180);
@@ -97,7 +97,7 @@ Joystick.prototype.actualizarProgresoDeConteoDePulsaciones = function(meta){
 Joystick.prototype.enviarFuerza = function(){
     var tipo_de_mensaje = "vortex.pulseada.fuerza";
     if(!this.joineado) tipo_de_mensaje = "vortex.pulseada.join"
-    this.portal.enviarMensaje({ tipoDeMensaje: tipo_de_mensaje,
+    Vx.send({ tipoDeMensaje: tipo_de_mensaje,
                                 jugador: this.o.jugador,
                                 partida: this.o.partida,
                                 x: this.pulsaciones.x,

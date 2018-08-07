@@ -5,8 +5,8 @@ var Bolita = function(opt){
 
 Bolita.prototype.start = function () {   
     this.masa = 0.5;
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     this.velocidad = new paper.Point(0, 0);
     this.fuerzaResultante = new paper.Point(0, 0);
@@ -40,7 +40,7 @@ Bolita.prototype.actualizarPosicion = function () {
         _this.velocidad = _this.velocidad.add(_this.fuerzaResultante.multiply(periodoDeMuestreo_s * (1 / _this.masa)));
         _this.posicion = _this.posicion.add(_this.velocidad.multiply(periodoDeMuestreo_s));
         _this.velocidad = _this.velocidad.multiply(0.75);
-        _this.portal.enviarMensaje({
+        Vx.send({
             tipoDeMensaje: "vortex.pulseada.bolita.posicion",
             partida: _this.o.partida,
             posicion: { x: _this.posicion.x, y: _this.posicion.y }

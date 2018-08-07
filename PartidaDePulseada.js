@@ -4,20 +4,20 @@ var PartidaDePulseada = function(opt){
 };
 
 PartidaDePulseada.prototype.start = function(){
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.join"),
-                                             new FiltroXClaveValor("partida", this.o.nombre)]),
-                                function (mensaje) { _this.jugadorUniendose(mensaje); });
+    Vx.when({tipoDeMensaje: "vortex.pulseada.join",
+             partida: this.o.nombre},
+             function (mensaje) { _this.jugadorUniendose(mensaje); });
     
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.fuerza"),
-                                             new FiltroXClaveValor("partida", this.o.nombre)]),
-                                function (mensaje) { _this.fuerzaRecibida(mensaje); });
+    Vx.when({tipoDeMensaje: "vortex.pulseada.fuerza",
+             partida: this.o.nombre},
+             function (mensaje) { _this.fuerzaRecibida(mensaje); });
     
-     this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.gol"),
-                                             new FiltroXClaveValor("partida", this.o.nombre)]),
-                                function (mensaje) { _this.golRecibido(mensaje); });
+    Vx.when({tipoDeMensaje: "vortex.pulseada.gol",
+            partida: this.o.nombre},
+            function (mensaje) { _this.golRecibido(mensaje); });
     
     this.bolita = new Bolita({partida:this.o.nombre});
     this.jugadores = {};
@@ -80,7 +80,7 @@ PartidaDePulseada.prototype.blanquearFuerzasRecibidas = function(){
 
 PartidaDePulseada.prototype.enviarJugadores = function(){
     for(var jugador in this.jugadores){
-        this.portal.enviarMensaje({
+        Vx.send({
             tipoDeMensaje:"vortex.pulseada.jugador",
             partida: this.o.nombre,
             nombre: jugador,

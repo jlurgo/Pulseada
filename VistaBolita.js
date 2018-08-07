@@ -8,14 +8,14 @@ VistaBolita.prototype.start = function () {
     this.circulo.fillColor = 'red';
     this.masa = 50;
     this.fuerzas = [];
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     var _this = this;
 
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.bolita.posicion"),
-                                                new FiltroXClaveValor("partida", this.o.partida)]),
-                                function (mensaje) { _this.posicionRecibida(mensaje); });
+    Vx.when({tipoDeMensaje: "vortex.pulseada.bolita.posicion",
+            partida: this.o.partida},
+            function (mensaje) { _this.posicionRecibida(mensaje); });
     
     this.cuerpo = this.circulo;
 };

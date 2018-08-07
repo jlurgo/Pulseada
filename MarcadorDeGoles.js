@@ -5,14 +5,14 @@ var MarcadorDeGoles = function(opt){
 
 MarcadorDeGoles.prototype.start = function () { 
     this.ui = $('#plantilla_marcador_de_goles').clone();
-    this.portal = new NodoPortalBidi();
-    NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
+    //this.portal = new NodoPortalBidi();
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(this.portal);
 
     var _this = this;
-    this.portal.pedirMensajes(new FiltroAND([new FiltroXClaveValor("tipoDeMensaje", "vortex.pulseada.gol"),
-                                             new FiltroXClaveValor("partida", this.partida),
-                                            new FiltroXClaveValor("jugador", this.jugador)]),
-                                function (mensaje) { _this.golRecibido(mensaje); });
+    Vx.when({tipoDeMensaje: "vortex.pulseada.gol",
+             partida: this.partida,
+             jugador: this.jugador},
+            function (mensaje) { _this.golRecibido(mensaje); });
     
     this.ui.text(this.jugador + ":" + this.goles);
 };

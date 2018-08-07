@@ -1,12 +1,16 @@
 var onDeviceReady = function() {       
-    var clienteHTTP = new NodoClienteHTTP('http://router-vortex.herokuapp.com', 10);             
+    //var clienteHTTP = new NodoClienteHTTP('http://backend-sime.herokuapp.com', 10);             
+    //var clienteHTTP = new NodoClienteHTTP('http://router-vortex.herokuapp.com', 10);             
     //var clienteHTTP = new NodoClienteHTTP('http://localhost:3000', 100);             
-    NodoRouter.instancia.conectarBidireccionalmenteCon(clienteHTTP);
+    //NodoRouter.instancia.conectarBidireccionalmenteCon(clienteHTTP);
     
     //var socket = io.connect('http://localhost:3000');    
     //var socket = io.connect('http://router-vortex.herokuapp.com');
+    //var socket = io.connect('http://backend-sime.herokuapp.com');
     //var conector_socket = new NodoConectorSocket(socket);    
     //NodoRouter.instancia.conectarBidireccionalmenteCon(conector_socket);
+    
+    Vx.conectarCon(new NodoClienteHTTP('http://router-vortex.herokuapp.com'));
     var inicio = new PantallaDeInicio();    
 };
 
